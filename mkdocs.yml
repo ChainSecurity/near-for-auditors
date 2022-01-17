@@ -1,1 +1,8 @@
 site_name: NEAR for Auditors
+nav:
+  - Intro: index.md
+  - Concepts:  
+    - Deployment: deployment.md  
+    - Execution: execution.md
+    - Cross-contract Calls: cross-contract-calls.md
+  - Common Issues: issues.md

@@ -1,15 +1,8 @@
 # A simple NEAR Smart Contract
 
-https://github.com/near-examples/rust-status-message/blob/master/src/lib.rs
+This document aims to be an introduction to the NEAR protocol for advanced users.
 
 ### Requirements
 
 * Rust knowledge
 * Familiarity with blockchain concepts
-
-## The ``Status-message`` Smart contract
-
-
-## Deploying the smart contract
-
-
