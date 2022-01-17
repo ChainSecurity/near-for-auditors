@@ -1,0 +1,1 @@
+Here an example of contract that implements a cross contract call is presented. Users should be already familiar with how simple executions take place in the runtime.
