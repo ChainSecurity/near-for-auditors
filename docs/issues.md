@@ -23,3 +23,5 @@ ext::a(env::current_account_id(), 0, gas_per_promise)
             .and(ext::b(fail_b, env::current_account_id(), 0, gas_per_promise))
             .then(ext::c(c_value, env::other_contract(), 0, gas_per_promise))
             .and(ext::handle_callbacks(env::current_account_id(), 0, gas_per_promise))
+
+## The type system doesn't check for appropriate number of Promises
