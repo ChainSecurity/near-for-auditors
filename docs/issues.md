@@ -1,6 +1,6 @@
 ## "million cheap data additions"
 
-https://docs.near.org/docs/concepts/storage-staking
+[https://docs.near.org/docs/concepts/storage-staking](https://docs.near.org/docs/concepts/storage-staking)
 
 ## Arithmetic issues: Overflows, rounding errors
 
