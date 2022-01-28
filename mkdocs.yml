@@ -1,6 +1,7 @@
 site_name: NEAR for Auditors
 nav:
   - Intro: index.md
+  - Basic: basics.md
   - Concepts:  
     - Deployment: deployment.md  
     - Execution: execution.md
