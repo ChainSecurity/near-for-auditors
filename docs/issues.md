@@ -20,3 +20,5 @@ The handle_callback return value mismatch
 ## The type system doesn't check for appropriate number of Promises
 
 ## Out-of-gas 
+
+## When to use U64 vs u64
