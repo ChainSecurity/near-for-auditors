@@ -38,7 +38,7 @@ The contract exposes two public functions (indicated with ``pub``), i.e. ``set_s
 
 ## Submitting a new transaction
 
-Users can submit signed [transactions](https://nomicon.io/RuntimeSpec/Transactions.html) in the form of JSON-RPCs(?). For the scope of this tutorial, we will ignore how a transaction is routed (link) to a chunk-producer (validator?). Transactions specify batches of [Actions](https://nomicon.io/RuntimeSpec/Actions.html). These actions are strictly ordered, an action is executed only if the previous action has been completed. Additionally, each batch is executed atomically, hence if any action in the batch fails, all state changes are reverted. Note that a batch can only include actions from a single shard (what about different contracts in same shard?).
+Users can submit signed [transactions](https://nomicon.io/RuntimeSpec/Transactions.html) in the form of JSON-RPCs(?). For the scope of this tutorial, we will ignore how a transaction is routed (link) to a chunk-producer (validator?). Transactions specify batches of [Actions](https://nomicon.io/RuntimeSpec/Actions.html). These actions are strictly ordered, an action is executed only if the previous action has been completed. Moreover there is no guarantee that no other action submitted by other accounts will not be executed between the actions in the batch.
 
 To execute a function call, a user needs to specify a ``FunctionCall`` action. The ``FunctionCall`` Action is translated into an ``ActionReceipt``. [Receipts](https://nomicon.io/RuntimeSpec/Receipts.html) are a fundamental component of the NEAR-protocol. Shards communicate using receipts. Developers familiar to Ethereum should consider NEAR-receipts to be similar to Ethereum Transactions, in the sense that they are executed atomically. However, any subsequent cross-contract calls produced are *not* executed atomically, since they are asynchronous and will execute at the earliest in the next block. Receipts are also different from Ethereum since end users cannot produce receipts, only the validators can.
 
@@ -62,15 +62,17 @@ Each contract is stored in the form of [WebAssembly](https://webassembly.org/) (
 
 ### NEAR runtime
 
-The runtime can be regarded as an interpreter for wasm which is allowed to interact with the environment. The wasm representation imports external functions which are executed by the near runtime. For example, in the wat representation of ``status-message`` contract we will find the following command:
+The runtime can be regarded as an interpreter for wasm which is allowed to interact with the environment. The wasm representation imports external functions which are executed by the near runtime. For example, in the text represenation of WASM (WAT) representation of ``status-message`` contract we will find the following command:
 
     (import "env" "signer_account_id" (func $env.signer_account_id (type $t5)))
+
+This command lets the wasm runtime know that the a ``signer_account_id`` call will be exeuted by the environment.
     
 We can also find calls like the following:
 
     (call $env.signer_account_id (i64.const -3))
     
-This command essentially declares that the call will be executed by the runtime environment. The second command is an actual call to this routine.
+This command is essentially a call to the environment. This means that the wasm execution will stop so that the host receives this call and executes it. In this particular case, the host will retrieve the ``account_id`` of the signer of this transaction.
 
 ### WASM entry points
 

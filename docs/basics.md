@@ -19,11 +19,11 @@ Accounts are similar to Ethereum's public address in the sense that they can ini
 
 ### Transaction
 
-A transaction is a batch of actions which is signed with a public key on behalf of an account. 
+A transaction created by an account, is a batch of actions which is signed by a user who controls the private key of one of the whitelisted public keys of this account.
 
 ### Receipts
 
-Receipts implement cross-contract communication. They can only be created by chunk producers. There are two types of them: 1) [Action Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#actionreceipt) which specify an action to be executed and 2)[Data Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#datareceipt) which represent data dependencies of action receipts.
+Receipts implement cross-contract communication. They can only be created by nodes which are responsible for producing parts of the block from a shard (chunk producers). There are two types of them: 1) [Action Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#actionreceipt) which specify an action to be executed and 2)[Data Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#datareceipt) which represent data dependencies of action receipts. The return data an action receipt expects is part of these Data Receipts.
 
 ### Environment
 
