@@ -2,9 +2,9 @@ site_name: NEAR for Auditors
 nav:
   - Intro: index.md
   - Basic: basics.md
-  - Concepts:  
-    - Deployment: deployment.md  
-    - Execution: execution.md
-    - Storage: storage.md  
-    - Cross-contract Calls: cross-contract-calls.md
+  - Deployment: deployment.md  
+  - Execution: execution.md
+  - Storage: storage.md  
+  - Gas: gas.md  
+  - Cross-contract Calls: cross-contract-calls.md
   - Common Issues: issues.md

@@ -10,8 +10,9 @@ Here we define some basic terms:
 Accounts are similar to Ethereum's public address in the sense that they can initiate transactions and store contracts. However, they differ a lot from their Ethereum counterparts in the following ways:
 
 * Each account has a human readable name in the form of ``[<subdomain>.]*near``.
-* Multiple public keys can sign transactions for one account. These public keys are called [Full Access Keys](https://docs.near.org/docs/concepts/account#access-keys).
+* Multiple public keys can sign using the corresponding private keys transactions for one account. These public keys are called [Full Access Keys](https://docs.near.org/docs/concepts/account#access-keys).
 * Specific public keys can have limited access to an account [Function Call Keys](https://docs.near.org/docs/concepts/account#function-call-keys). These keys are allowed to make a specific function calls to a specific account and are allowed to spend a limited amount of NEAR tokens stored in the account. A formal specification of the concept can be found [here](https://nomicon.io/DataStructures/AccessKey.html#accesskeypermissionfunctioncall).
+* An account can store a contract and still operate as a normal user account (?). This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys.
 
 ### Action
 
@@ -23,7 +24,7 @@ A transaction created by an account, is a batch of actions which is signed by a 
 
 ### Receipts
 
-Receipts implement cross-contract communication. They can only be created by nodes which are responsible for producing parts of the block from a shard (chunk producers). There are two types of them: 1) [Action Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#actionreceipt) which specify an action to be executed and 2)[Data Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#datareceipt) which represent data dependencies of action receipts. The return data an action receipt expects is part of these Data Receipts.
+Receipts implement cross-contract communication. They can only be created by nodes which are responsible for producing parts of the block from a shard (chunk producers) (?). There are two types of them: 1) [Action Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#actionreceipt) which specify an action to be executed and 2)[Data Receipts](https://nomicon.io/RuntimeSpec/Receipts.html#datareceipt) which represent data dependencies of action receipts. The return data which an Action Receipt expects is part of these Data Receipts (?).
 
 ### Environment
 

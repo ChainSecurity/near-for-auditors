@@ -24,7 +24,7 @@ Let's consider the following contract:
 
 
 The state of the contract consists of a ``HashMap`` from ``AccountId`` to ``String``.
-Note that ``HashMap`` is part of the standard library of Rust (``std`` ) and not part of the ``near-sdk``. We will discuss later what difference it would make, had we chosen to use a structure from the ``near_sdk::collections``. (check)
+Note that ``HashMap`` is part of the standard library of Rust (``std`` ) and not part of the ``near-sdk``. We will discuss [later](storage.md) what difference it would make, had we chosen to use a structure from the ``near_sdk::collections``. 
 
 The contract exposes two public functions (indicated with ``pub``), i.e. ``set_status`` and ``get_status``. 
 

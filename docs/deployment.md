@@ -10,14 +10,21 @@ After creating a new account, all subsequent actions in the same batch transacti
 
 The CreateAccount action doesn't contain any data, as it uses the receiver address of the Transaction or ActionReceipt within which it is contained.
 
+(?) Add predecessors and registrar https://nomicon.io/RuntimeSpec/Actions#createaccountaction
+
 ## DeployContract
-In order to deploy code to an account, you must have a full access key or deploy the code from the account itself. Then, you submit a DeployContract action containing the contract's bytecode. This will replace the contract's code with the submitted bytecode. Indeed, code can be deployed multiple times to the same contract in order to upgrade it to new versions. If a contract needs to be non-upgradeable (trustless), all full access keys need to be removed (and the contract should not be able to deploy code to itself in an untrusted manner). Note that there is a maximum contract code size (how big?).
+In order to deploy code to an account, you must have a full access key or deploy the code from the account itself. Then, you submit a DeployContract action containing the contract's bytecode. This will replace the contract's code with the submitted bytecode. Indeed, code can be deployed multiple times to the same contract in order to upgrade it to new versions. If a contract needs to be non-upgradeable (trustless), all full access keys need to be removed (and the contract should not be able to deploy code to itself in an untrusted manner). Note that there is a maximum contract code size determined by the genesis configuration (see ``max_contract_size``) (?)
 
     DeployContractAction {
         code: Vec<u8>
     }
 
 The contract is deployed and ready to use as soon as the action finishes.
+
+There are no limitations on how many ``DeployContract`` actions exist in a batch. For example we could have a batch that looks like: 
+    1. Deploy a contract
+    2. Function call on that contract
+    3. Deploy a new contract to that location
 
 ## Initialization
 All contracts must implement the ``Default`` trait. This is because whenever any method is called on the contract, if the contract state does not already exist a default state will be created. If this is not desired, one can instead implement the ``PanicOnDefault`` trait which, as the name suggests, panics when ``default`` is called.
