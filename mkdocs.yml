@@ -1,10 +1,14 @@
-site_name: NEAR for Auditors
+site_name: NEAR for Advanced Users
 nav:
   - Intro: index.md
-  - Basic: basics.md
-  - Deployment: deployment.md  
-  - Execution: execution.md
-  - Storage: storage.md  
-  - Gas: gas.md  
-  - Cross-contract Calls: cross-contract-calls.md
+  - Concepts:
+    - Basic: basics.md
+    - Deployment: deployment.md  
+    - Execution: execution.md
+    - Storage: storage.md  
+    - Cross-contract Calls: cross-contract-calls.md
+    - Gas: gas.md  
   - Common Issues: issues.md
+
+theme:
+  name: material

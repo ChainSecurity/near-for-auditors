@@ -1,7 +1,7 @@
 # Gas
 
 Gas is the measure of computational effort performed by the validators to execute a receipt. The signer of a receipt must provide enough gas to offset the cost of executing it.
-There are various fees associated with different operations. For example, creating an action receipt from a transaction incurs the ``action_receipt_creation_config`` fee. Each type of action contained in this action receipt will also incur a cost, e.g. the ``create_account_cost`` if the action is a CreateAccountAction.
+There are various fees associated with different operations. For example, creating an action receipt from a transaction incurs the ``action_receipt_creation_config`` fee. Each type of action contained in this action receipt will also incur a cost, e.g. the ``create_account_cost`` if the action is a CreateAccountAction. The cost of each operation is defined in the [``GenesisConfig``](https://nomicon.io/GenesisConfig/).
 
 ## Fees
 A fee consists of three different values: ``send_sir``, ``send_not_sir`` and ``execute``. The abbreviation ``sir`` stands for "Sender is Receiver", indicating that a contract is calling itself, e.g. for a callback.
@@ -19,7 +19,7 @@ The execution of WASM code itself is not as easy to translate into gas costs. Th
 ## Gas Refund
 
 When execution of a receipt terminates, any gas left over is refunded to the signer of the receipt. Note that the signer may be a different shard, so a refund ActionReceipt must be sent. For the special case of refunds, the ``signer_id`` is ``system`` and the public key is ``0``.
-If the receipt was sent using an access key with FunctionCallPermission and limited allowance, the allowance will still be refunded.
+If the receipt was sent using an access key with ``FunctionCallPermission`` and limited allowance, the allowance will still be refunded.
 
 
 ## WASM metering

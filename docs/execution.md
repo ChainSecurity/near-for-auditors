@@ -1,5 +1,6 @@
-# The ``status-message`` Contract
-Let's consider the following contract:
+# Function Calls to contracts
+
+Let's consider the [StatusMessage](https://github.com/near/near-sdk-rs/blob/master/examples/status-message/src/lib.rs) contract:
 
     #[near_bindgen]
     #[derive(Default, BorshDeserialize, BorshSerialize)]
@@ -28,19 +29,16 @@ Note that ``HashMap`` is part of the standard library of Rust (``std`` ) and not
 
 The contract exposes two public functions (indicated with ``pub``), i.e. ``set_status`` and ``get_status``. 
 
-## ``set_status``
+* ``set_status``: allows users to record a message. The first thing the call does is to get ``env::signer_account_id()`` from the environment. We will see in more detail how ``env::signer_account_id()`` works. For now, we can assume that it retrieves the ``account_id`` of the account which called the contract. Users familiar with Ethereum and solidity can think of this as ``msg.sender``. Then, the ``records`` map is updated by setting storing the ``message`` with the account id as the key.
 
-``set_status`` allows users to record a message. The first thing the call does is to get ``env::signer_account_id()`` from the environment. We will see in more detail how ``env::signer_account_id()`` works. For now, we can assume that it retrieves the ``account_id`` of the account which called the contract. Users familiar with Ethereum and solidity can think of this as ``msg.sender``. Then the ``records`` map is updated by setting storing the ``message`` with the account id as the key.
-
-## ``get_status``
-``get_status`` allows users to retrieve the message for any account by simply passing the ``account_id`` of that specific account. Note that in case the ``account_id`` key is not present in the map, ``self.records.get(...)`` will return ``None``. For more information about the ``Option`` type, please refer [here](https://doc.rust-lang.org/std/option/).
+* ``get_status``: allows users to retrieve the message for any account by simply passing the ``account_id`` of that specific account. Note that in case the ``account_id`` key is not present in the map, ``self.records.get(...)`` will return ``None``. For more information about the ``Option`` type, please refer [here](https://doc.rust-lang.org/std/option/).
 
 
 ## Submitting a new transaction
 
-Users can submit signed [transactions](https://nomicon.io/RuntimeSpec/Transactions.html) in the form of JSON-RPCs(?). For the scope of this tutorial, we will ignore how a transaction is routed (link) to a chunk-producer (validator?). Transactions specify batches of [Actions](https://nomicon.io/RuntimeSpec/Actions.html). These actions are strictly ordered, an action is executed only if the previous action has been completed. Moreover there is no guarantee that no other action submitted by other accounts will not be executed between the actions in the batch.
+Users can submit signed [transactions](https://nomicon.io/RuntimeSpec/Transactions.html) in the form of JSON-RPCs(?). For the scope of this tutorial, we will ignore how a transaction is [routed](https://nomicon.io/NetworkSpec/) to a chunk-producer. Transactions specify batches of [Actions](https://nomicon.io/RuntimeSpec/Actions.html). These actions are strictly ordered, an action is executed only if the previous action has been completed. Moreover there is no guarantee that no other action submitted by other accounts will not be executed between the actions in the batch.
 
-To execute a function call, a user needs to specify a ``FunctionCall`` action. The ``FunctionCall`` Action is translated into an ``ActionReceipt``. [Receipts](https://nomicon.io/RuntimeSpec/Receipts.html) are a fundamental component of the NEAR-protocol. Shards communicate using receipts. Developers familiar to Ethereum should consider NEAR-receipts to be similar to Ethereum Transactions, in the sense that they are executed atomically. However, any subsequent cross-contract calls produced are *not* executed atomically, since they are asynchronous and will execute at the earliest in the next block. Receipts are also different from Ethereum since end users cannot produce receipts, only the validators can.
+To execute a function call, a user needs to specify a ``FunctionCall`` action. The ``FunctionCall`` Action is translated into an ``ActionReceipt``. [Receipts](https://nomicon.io/RuntimeSpec/Receipts.html) are a fundamental component of the NEAR-protocol. Shards communicate using receipts. Developers familiar to Ethereum should consider NEAR-receipts to be similar to Ethereum Transactions, in the sense that they are executed atomically. However, any subsequent cross-contract calls produced are **not** executed atomically, since they are asynchronous and will execute at the earliest in the next block. Receipts are also different from Ethereum since end users cannot produce receipts, only the validators can.
 
 
     ActionReceipt {
@@ -62,7 +60,7 @@ Each contract is stored in the form of [WebAssembly](https://webassembly.org/) (
 
 ### NEAR runtime
 
-The runtime can be regarded as an interpreter for wasm which is allowed to interact with the environment. The wasm representation imports external functions which are executed by the near runtime. For example, in the text represenation of WASM (WAT) representation of ``status-message`` contract we will find the following command:
+The runtime can be regarded as an interpreter for WASM which is allowed to interact with the environment. The WASM representation imports external functions which are executed by the NEAR runtime. For example, in the text represenation of WASM (WAT) representation of ``status-message`` contract we will find the following command:
 
     (import "env" "signer_account_id" (func $env.signer_account_id (type $t5)))
 
@@ -80,18 +78,13 @@ An important distinction should be made between an EVM smart contract and a WASM
 
     (func $get_status (export "get_status") (type $t11) ...
 
-
 An observant reader of the WASM bytecode might notice that neither ``set_status`` nor ``get_status`` accept parameters on the WASM level. This is counter-intuitive given that both functions accept arguments on the Rust level. We further explore this in the next section.
 
 ### The ``#[near_bindgen]`` macro
 
 According to the [``near-sdk-rs``](https://www.near-sdk.io/) documentation, the ``#[near_bindgen]`` macro should always be present to generate the necessary glue code for a valid near contract. In this section, we dive deeper into its functionality.
 
-Users can inspect the Rust code with the expanded macros by using [cargo-expand](https://github.com/dtolnay/cargo-expand).
-
-    cargo expand --target-dir src --target wasm32-unknown-unknown
-
-In the resulting code we can find the following:
+Users can inspect the Rust code with the expanded macros by using ``cargo-expand``. In the resulting code we can find the following:
 
     ...
 
@@ -124,7 +117,7 @@ In the resulting code we can find the following:
 By looking at this snippet we can validate that neither ``set_status`` nor ``get_status`` functions which are exported actually accept arguments. The function wraps the actual function we defined inside ``impl StatusMessage``. We note that the ``Input`` struct indeed contains the message. In ``get_status`` it contains ``account_id``. Moreover, there are two calls to the environment, one to retrieve the actual input (``env::input``) and one to get the structure which corresponds to the contract state (``env::state_read()``).
 After the execution terminates, the resulting state of the contract is written to persistent memory (``env::state_write(&contract)``).
 
-### Communication with the environment
+### Communication with the environment (? Too much?)
 
 By diving deeper into ``nearcore``, we can find that the communication between the runtime and the execution engine happens through registers (more here.)
 
