@@ -6,6 +6,19 @@ Let us consider this [example](https://github.com/near/near-sdk-rs/blob/master/e
 
 Similarly to Solidity, in order for the smart contract to typecheck we need to define the interface of the external contracts we wish to interact with. This, in Rust, happens with a declaration of a trait such as ``ExtCrossContract``. In this particular case, ``ExtCrossContract`` implements four functions, namely ``a`` which takes no arguments and returns a Promise, i.e. it makes another cross-contract call, ``b`` which takes a ``bool`` parameter and returns a ``String``, ``c`` which takes and returns a ``u8`` and ``handle_callback`` which takes three callback results and returns 3 booleans. 
 
+    #[ext_contract(ext)]
+    pub trait ExtCrossContract {
+        fn a() -> Promise;
+        fn b(fail: bool) -> String;
+        fn c(value: u8) -> u8;
+        fn handle_callbacks(
+            #[callback_result] a: Result<u8, PromiseError>,
+            #[callback_result] b: Result<String, PromiseError>,
+            #[callback_result] c: Result<u8, PromiseError>,
+        ) -> (bool, bool, bool);
+    }
+
+
 ### #[ext_contract(ext)]
 
 In order to understand the role this trait declaration plays in the execution we need to see the expanded code.
@@ -107,7 +120,11 @@ Let us inspect part of the expanded version of the definition of ``handle_callba
 What we see here is that the call will try to read the first three(?) promise results from the environment, parse them and then execute the logic inside ``handle_callbacks``. This also explains why we don't need to pass any arguments when we create the call to ``handle_callbacks``. 
 
 It is important to note that the runtime is not aware of the promise dependencies of the call during the execution of the call. In other words, the action receipt would wait for the three calls to execute even if it would make use of only two of them. 
-Conversely, an action receipt waiting for 2 data receipts could execute even if the method it executes takes three promise arguments. Whether the correct dependencies are satisfied is the responsibility of the developer. Moreover we need to emphasize the "random" nature of the execution in a concurrent environment.
+Conversely, an action receipt waiting for 2 data receipts could execute even if the method it executes takes three promise arguments. Whether the correct dependencies are satisfied is the responsibility of the developer. Moreover we need to emphasize the "random" nature of the execution in a concurrent environment. There are no guarantees about the order of execution of cross-contract calls. Developers should explicitly define the order of execution if required, using the Promise API. For example, there are no guarantees provided by the specification of the protocol that the following cross-contract calls(``a()``, ``b(fail_b)``, ``c(c_value)``) aiming the same shard will executed in that order as given in the snippet below:
+
+    ext::a(env::current_account_id(), 0, gas_per_promise)
+        .and(ext::b(fail_b, env::current_account_id(), 0, gas_per_promise))
+        .and(ext::c(c_value, env::current_account_id(), 0, gas_per_promise))
 
 Another important point is the return value of an external call. In a trustless environment, an external call might not fully satisfy the assumed interface. In other words, a call to an external contract might return a different type than expected. This would lead the callback to fail. For example, consider a cross contract call to a contract which satisfies the interface of ExtCrossContract except for the return value of ``b`` for which it instead returns a String. When the callback tries to process the result of the Promise, it will fail.
 

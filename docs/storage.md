@@ -3,7 +3,7 @@
 In our [previous tutorial](execution.md), when we implemented the ``status-message`` contract, we used a ``HashMap`` implemented by Rust's standard library. In this tutorial we will explore how this map persists in memory, as well as how we can use the ``collections`` library offered by ``near-sdk``.
 
 ## Tries
-The state of the NEAR blockchain is stored in a [Merkle Patricia Trie](https://en.wikipedia.org/wiki/Trie). For the scope of this tutorial, we consider the trie as a tree which stores data in its leaves and each node corresponds to one byte(?) of its key. This means that in order to access the data for a specific key we need to follow the nodes that comprise the key. Each account can access only its own state, i.e. the subtree we end up in if we traverse the state trie using the account id.  
+The state of the NEAR blockchain is stored in a [Merkle Patricia Trie](https://en.wikipedia.org/wiki/Trie). For the scope of this tutorial, we consider, however, a simple trie and we will ignore the technical [details](https://en.wikipedia.org/wiki/Radix_tree) of Patricia tries. Hence, we should think of a trie as a tree which stores data in its leaves and each node corresponds to one byte of its key and we will ignore the fact. This means that in order to access the data for a specific key we need to follow the nodes that comprise the key. Each account can access only its own state, i.e. the subtree we end up in if we traverse the state trie using the account id.  
 
 
 ## Storage in WASM
