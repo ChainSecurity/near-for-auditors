@@ -2,13 +2,22 @@ site_name: NEAR for Advanced Users
 nav:
   - Intro: index.md
   - Concepts:
-    - Basic: basics.md
+    - Basics: basics.md
     - Deployment: deployment.md  
     - Execution: execution.md
     - Storage: storage.md  
     - Cross-contract Calls: cross-contract-calls.md
     - Gas: gas.md  
   - Common Issues: issues.md
+  - Resources: resources.md
 
 theme:
   name: material
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+

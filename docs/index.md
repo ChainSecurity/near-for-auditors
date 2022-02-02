@@ -1,4 +1,4 @@
-# A simple NEAR Smart Contract
+# Introduction
 
 This document aims to be an introduction to the NEAR protocol for advanced users. The main purpose is that users acquire adequate knowledge so they can understand how the protocol works under the hood, and, thus, predict the behavior of the smart contracts to either avoid common pitfalls in their development or detect issues in their review.
 
@@ -25,3 +25,4 @@ An alternative which provides a better UX is [``cargo expand``](https://github.c
 ### Inspecting WASM
 
 Smart contracts are compiled to [WebAssembly](https://webassembly.org/) (WASM) and then stored and executed in this format. WASM is a binary format and, thus, not human-readable. Users who want to inspect WASM code should use a tool such as [``wasm2wat``](https://webassembly.github.io/wabt/demo/wasm2wat/) in oder to convert the binary format to a human readable text format.
+

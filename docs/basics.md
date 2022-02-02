@@ -1,6 +1,6 @@
 NEAR introduces a lot of new concepts with which auditors and developers might not be familiar. A quick introduction to those can be found [here](https://docs.near.org/docs/concepts/new-to-near). In this section we define the most important of them:
 
-### Account
+### Accounts
 
 Accounts are similar to Ethereum's public address in the sense that they can initiate transactions and store contracts. However, they differ a lot from their Ethereum counterparts in the following ways:
 
@@ -9,7 +9,7 @@ Accounts are similar to Ethereum's public address in the sense that they can ini
 * Public keys can have limited access to an account [Function Call Keys](https://docs.near.org/docs/concepts/account#function-call-keys). These keys are allowed to make a specific function calls to a specific account and spend a limited amount of NEAR tokens stored in the account. A formal specification of the concept can be found [here](https://nomicon.io/DataStructures/AccessKey.html#accesskeypermissionfunctioncall).
 * An account can store a contract and still operate as a normal user account (?). This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys.
 
-### Action
+### Actions
 
 [Actions](https://docs.near.org/docs/concepts/transaction#action) is a unit of operation on the NEAR blockchain. Multiple Actions can be batched in one transaction. Formally they are defined [here](https://nomicon.io/RuntimeSpec/Actions.html). For completness we enumerate them here and give a short description. We dive deeper in some of them in other tutorials.
 
@@ -22,7 +22,7 @@ Accounts are similar to Ethereum's public address in the sense that they can ini
 * ``DeleteKey``: Deletes a public key from an account.
 * ``DeleteAccount``: Deletes an account.
 
-### Transaction
+### Transactions
 
 A [transaction](https://nomicon.io/RuntimeSpec/Transactions) created by an account, is a batch of actions which is signed by a user who controls the private key of one of the whitelisted public keys for the account.
 
@@ -38,7 +38,7 @@ Receipts implement cross-contract communication. They can only be created by nod
 
 The environment is the part of the state of the blockchain that a function call can access during its execution.
 
-### Promise
+### Promises
 
 [Promises](https://nomicon.io/RuntimeSpec/Components/BindingsSpec/PromisesAPI.html) are the interface used by ``near-sdk`` to create asynchronous calls and process their results.
 
