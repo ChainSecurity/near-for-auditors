@@ -141,9 +141,9 @@ It is important to note that the runtime is not aware of the promise dependencie
 Conversely, an action receipt waiting for 2 data receipts could execute even if the method it executes takes three promise arguments. Whether the correct dependencies are satisfied is the responsibility of the developer. Moreover we need to emphasize the "random" nature of the execution in a concurrent environment. There are no guarantees about the order of execution of cross-contract calls. Developers should explicitly define the order of execution if required, using the Promise API. For example, there are no guarantees provided by the specification of the protocol that the following cross-contract calls(``a()``, ``b(fail_b)``, ``c(c_value)``) aiming the same shard will executed in that order as given in the snippet below:
 
 ```rust
-    ext::a(env::current_account_id(), 0, gas_per_promise)
-        .and(ext::b(fail_b, env::current_account_id(), 0, gas_per_promise))
-        .and(ext::c(c_value, env::current_account_id(), 0, gas_per_promise))
+ext::a(env::current_account_id(), 0, gas_per_promise)
+    .and(ext::b(fail_b, env::current_account_id(), 0, gas_per_promise))
+    .and(ext::c(c_value, env::current_account_id(), 0, gas_per_promise))
 ```
 
 Another important point is the return value of an external call. In a trustless environment, an external call might not fully satisfy the assumed interface. In other words, a call to an external contract might return a different type than expected. This would lead the callback to fail. For example, consider a cross contract call to a contract which satisfies the interface of ExtCrossContract except for the return value of ``b`` for which it instead returns a String. When the callback tries to process the result of the Promise, it will fail.
@@ -160,3 +160,19 @@ The ``#[private]`` macro specifies that a function can only be externally called
 ```
 
 This allows the restriction of access to callback functions to prevent external contracts from injecting data into a function that is expected to be called by the contract itself. Note that a "private" function must still be defined as a ``pub fn``, which allows it to be called externally!
+
+## Storage in Cross-contract Calls
+
+As we have discussed, in contrast to Ethereum, where transactions are executed atomically, in NEAR Action Receipts are executed atomically. As we have showed in this tutorial, cross-contract calls create new Action Receipts.
+
+Let us consider the case where any of the calls of the ``call_all`` method failed. The failure of the cross-contract call, e.g., ``a``, would lead to reverting the storage modification performed by ``a`` only. However, the modification cassed by ``call_all`` would not be reverted. Moreover, ``hanlde_callback`` is indifferent of whether any of the external calls it awaits failed. As soon as all the external calls are executed, ``handle_callback`` can also execute. If we want to revert the changes of ``call_all``, we should do it manually in the ``handle_callback``. At this point we want to draw reader's attention to two important points:
+
+1. Each contract is responsible for each own state. Thus failures of cross-contract calls should be handled manually.
+2. To revert the stoarge manually, the action should have enough gas. This should also be guaranteed by the implementation.
+
+The NEAR runtime does not prevent a second call to the same contract method from executing while the first one awaits for its dependencies. This means that any modification of the first method call will be visible in the second one. For example, the following scenario is possible:
+
+1. User ``A`` makes a call to method ``a`` of contract ``C`` which modifies the state of the contract. ``a`` makes a corss-contract call and uses a callback ``ca`` to handle the result of the cross-contract call.
+2. ``ca`` awaits for the cross-contract call to complete
+3. User ``B`` makes a call to method ``a`` of ``C``. This execution will use the updated state from 1.
+
