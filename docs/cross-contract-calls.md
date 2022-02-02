@@ -178,4 +178,4 @@ The NEAR runtime does not prevent a second call to the same contract method from
 
 The Figure below illustrates the example:
 
-[ ![Sharded](img/concurrency.svg) ](img/cross_contract_merge.svg)
+[ ![Sharded](img/concurrency.svg) ](img/concurrency.svg)

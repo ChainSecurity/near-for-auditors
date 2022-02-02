@@ -1,5 +1,3 @@
-## Common Issues
-
 In this section, we present some common pitfalls developers and auditors should keep in mind when working with NEAR smart contracts.
 
 ### "million cheap data additions"
