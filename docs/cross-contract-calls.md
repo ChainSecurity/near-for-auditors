@@ -176,3 +176,6 @@ The NEAR runtime does not prevent a second call to the same contract method from
 2. ``ca`` awaits for the cross-contract call to complete
 3. User ``B`` makes a call to method ``a`` of ``C``. This execution will use the updated state from 1.
 
+The Figure below illustrates the example:
+
+[ ![Sharded](img/concurrency.svg) ](img/cross_contract_merge.svg)
