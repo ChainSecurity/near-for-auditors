@@ -5,12 +5,11 @@ In our [previous tutorial](execution.md), we used a ``HashMap`` implemented by R
 ## Tries
 The state of the NEAR blockchain is stored in a [Merkle Patricia Trie](https://en.wikipedia.org/wiki/Trie). For the scope of this tutorial, we consider a simple trie and we will ignore the technical [details](https://en.wikipedia.org/wiki/Radix_tree) of Patricia tries. Hence, we should think of a trie as a tree which stores data in its leaves and each node corresponds to one byte of its key. This means that in order to access the data for a specific key, we need to follow the nodes that comprise that key. Each account can access only its own state, which is the subtree we end up in if we traverse the state trie using the account id.
 
-
 ## Storage in WASM
 
 The storage of a contract is a key-value store. Both the key and value can be arbitrarily large, but there is a cost associated with the size of each. A contract's state is serialized and stored with the ``"STATE"`` key.
 
-Before the processing of an action receipt starts, the state of the contract is loaded (? Not true for functions that don't read or write state). The state of the contract is stored in the state trie that persists in the hard drive of the chunk-producer. The state of the contract includes the values of all its field variables. This means that a potentially big data structure like a ``HashMap`` is eagerly loaded from storage at that point. This is inefficient, as it requires a lot of computation cycles which results in expensive transactions.
+The state of the contract is stored in the state trie. When a function that reads or writes state is called (i.e. it takes ``&self`` or ``&mut self`` as an argument), the state of the contract is loaded. The state of the contract includes the values of all its field variables. This means that a potentially big data structure like a ``HashMap`` is eagerly loaded from storage at this point. This is inefficient, as it requires a lot of computation cycles which results in expensive transactions.
 
 ## ``near_sdk::collections``
 

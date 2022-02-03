@@ -7,7 +7,7 @@ Accounts are similar to Ethereum's public addresses in the sense that they can i
 * Each account has a human readable name in the form of ``[<subdomain>.]*near``.
 * Multiple public keys can sign transactions for one account using the corresponding private keys. These public keys are called [Full Access Keys](https://docs.near.org/docs/concepts/account#access-keys).
 * Public keys can have limited access to an account [Function Call Keys](https://docs.near.org/docs/concepts/account#function-call-keys). These keys are allowed to make a specific function calls to a specific account and spend a limited amount of NEAR tokens stored in the account. A formal specification of the concept can be found [here](https://nomicon.io/DataStructures/AccessKey.html#accesskeypermissionfunctioncall).
-* An account can store a contract and still operate as a normal user account (?). This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys.
+* An account can store a contract and still operate as a normal user account. This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys.
 
 ### Actions
 

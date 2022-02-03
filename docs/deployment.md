@@ -13,8 +13,6 @@ The ``CreateAccount`` action does not contain any data, as it uses the receiver 
 
 After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account. In NEAR's terms the predecessor of all the ActionReceipts following a CreateAccountAction is the new account id.
 
-(?Tynan)
-
 ## Deploying a contract
 
 In order to deploy code to an account, we must have a full access key or have the contract deploy its own code. We submit a ``DeployContract`` action containing the contract's bytecode. This will replace any pre-existing code with the submitted bytecode. Indeed, code can be deployed multiple times to the same contract in order to upgrade it to new versions. If a contract needs to be non-upgradeable (trustless), all Full Access Keys need to be removed (and the contract should not be able to deploy code to itself in an untrusted manner). Note that there is a maximum contract code size determined by the genesis configuration (see ``max_contract_size``), which is set to 4194304 bytes (2^22) at the time of writing.
