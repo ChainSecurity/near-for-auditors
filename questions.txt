@@ -4,3 +4,5 @@ Predecessors
 Deploying contract: first line
 max_contract_size: genesis configuration
 What's the difference between init and Default
+Execution:
+Is it JSON-RPC?
