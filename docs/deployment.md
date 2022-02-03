@@ -17,7 +17,7 @@ After creating a new account, all subsequent actions in the same batch transacti
 
 ## Deploying a contract
 
-In order to deploy code to an account, we must have a full access key or deploy the code from the account itself(?Tynan). Then, we submit a ``DeployContract`` action containing the contract's bytecode. This will replace any already existing contract's code with the submitted bytecode. Indeed, code can be deployed multiple times to the same contract in order to upgrade it to new versions. If a contract needs to be non-upgradeable (trustless), all Full Access Keys need to be removed (and the contract should not be able to deploy code to itself in an untrusted manner). Note that there is a maximum contract code size determined by the genesis configuration (see ``max_contract_size``) (?Tynan)
+In order to deploy code to an account, we must have a full access key or have the contract deploy its own code. We submit a ``DeployContract`` action containing the contract's bytecode. This will replace any pre-existing code with the submitted bytecode. Indeed, code can be deployed multiple times to the same contract in order to upgrade it to new versions. If a contract needs to be non-upgradeable (trustless), all Full Access Keys need to be removed (and the contract should not be able to deploy code to itself in an untrusted manner). Note that there is a maximum contract code size determined by the genesis configuration (see ``max_contract_size``), which is set to 4194304 bytes (2^22) at the time of writing.
 
 ```rust
 DeployContractAction {
@@ -34,7 +34,7 @@ It is important to emphasize that there are no limitations on how many ``DeployC
 3. Deploy a new contract to that location
 
 ## Initialization
-All contracts must implement the ``Default`` trait (?Tynan [this](https://github.com/near/near-sdk-rs/blob/master/examples/callback-results/src/lib.rs) doesn't). This is because whenever any method is called on the contract, if the contract state does not already exist a default state will be created. If this is not desired, one can instead implement the ``PanicOnDefault`` trait which, as the name suggests, panics when ``default`` is called. The default trait can be implemented using a macro or manually.
+All contracts that contain view or change methods (``&self`` or ``&mut self``) must implement the ``Default`` trait. This is because a default state will be created whenever any method is called on the contract, if the contract state does not already exist. If this is not desired, one can instead derive the ``PanicOnDefault`` trait which, as the name suggests, panics when ``default`` is called. The default trait can be derived using a macro or implemented manually.
 
 For [StatusMessage](https://github.com/near/near-sdk-rs/blob/master/examples/status-message/src/lib.rs#L8) contract we derive the trait using a Rust macro:
 
