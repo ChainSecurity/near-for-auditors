@@ -15,7 +15,7 @@ overflow-checks = true
 
 ### The prefixes of persistent storage should be different
 
-As we explained when we talked about storage, in NEAR we should specify a prefix for each data structure we use. These prefixes should be guaranteed to different for different data structures otherwise unexpected behavior will arise. Additionally, the prefixes should not be substrings of one another - for example a map with the prefix "ab" could have storage slot conflicts with a map with the prefix "abc". (?Ioannis)
+As we explained when we talked about storage, in NEAR we should specify a prefix for each data structure we use. These prefixes should be guaranteed to different for different data structures otherwise unexpected behavior will arise. Additionally, the prefixes should not be substrings of one another - for example a map with the prefix "ab" could have storage slot conflicts with a map with the prefix "abc".
 
 ### Calls executed in multiple blocks
 
