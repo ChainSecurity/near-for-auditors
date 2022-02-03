@@ -14,16 +14,15 @@ During the execution of a receipt, other costs can occur. Each interaction with 
 
 Additionally, each additional receipt produced by the execution incurs a direct cost of creating the receipt, as well as attaching the gas to the receipt for the receiver to use. Note that one must know _in advance_ how much gas to attach to each cross-contract call, one can't simply attach the remaining gas at the end of execution.
 
-The execution of WASM code itself is not as easy to translate into gas costs. The runtime injects some gas metering functionality into the wasm code, which accrues the gas costs as they occur during execution.
+The execution of WASM code itself is not as easy to translate into gas costs. The runtime injects some gas metering functionality into the WASM code, which accrues the gas costs as they occur during execution.
 
 ## Gas Refund
 
-When execution of a receipt terminates, any gas left over is refunded to the signer of the receipt. Note that the signer may be a different shard, so a refund ActionReceipt must be sent. For the special case of refunds, the ``signer_id`` is ``system`` and the public key is ``0``.
+When execution of a receipt terminates, any gas left over is refunded to the signer of the receipt. Note that the signer may be in a different shard, so a refund ActionReceipt must be sent. For the special case of refunds, the ``signer_id`` is ``system`` and the public key is ``0``.
 If the receipt was sent using an access key with ``FunctionCallPermission`` and limited allowance, the allowance will still be refunded.
-
 
 ## WASM metering
 
 The ``wasm_runner`` and ``wasmtime_runner`` use ``pwasm`` to (inject a gas meter)[https://docs.rs/pwasm-utils/latest/pwasm_utils/fn.inject_gas_counter.html] which calls the ``gas`` function [here](https://github.com/near/nearcore/blob/master/runtime/near-vm-logic/src/logic.rs#L1055). It essentially analyzes the 'basic blocks' of the WASM code and inserts calls to the ``gas`` function at the start of each one, to make sure the runtime has enough gas left to execute the entire block. So it's the runtime's responsibility to revert if too much gas is used. The gas costs are configurable, but NEAR seems to use the default values.
 
-The ``wasm2_runner`` uses custom wasm crates which use a FastGasCounter struct which contains a ``gas_limit``. If this limit is exceeded, an exception occurs and the WASM code stops executing. It seems that this is intended for compilation with built-in gas metering. (?) I couldn't find anywhere where code is injected into existing WASM code.
+The ``wasm2_runner`` uses custom wasm crates which use a FastGasCounter struct which contains a ``gas_limit``. If this limit is exceeded, an exception occurs and the WASM code stops executing. It seems that this is intended for compilation with built-in gas metering.
