@@ -6,3 +6,5 @@ max_contract_size: genesis configuration
 What's the difference between init and Default
 Execution:
 Is it JSON-RPC?
+Issues:
+https://github.com/near/sdk-docs/blob/93e2fa29f3f38fc3870d404555cf843b765ac34a/docs/contract-interface/serialization-interface.md

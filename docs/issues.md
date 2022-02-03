@@ -7,7 +7,12 @@ As we explained in a [previous tutorial](``storage.md``), NEAR introduces storag
 
 ### Arithmetic issues: Overflows, rounding errors
 
-Rust contracts are only allowed to use integers. Division operation between integers can lead to loss of precision (e.g., ``2/3=0``) and lead contracts to unexpected state. Moreover, rounding errors can accumulate. Like Ethereum, integers have a specified size, thus, operations can lead to overflows. It is important for users to know that overflows can lead the execution to abort only in debug mode. A specific flag must be passed to the compile to avoid such overflows (Tynan?)
+Rust contracts are only allowed to use integers. Division operation between integers can lead to loss of precision (e.g., ``2/3=0``) and lead contracts to unexpected state. Moreover, rounding errors can accumulate. Like Ethereum, integers have a specified size, thus, operations can lead to overflows. It is important for users to know that overflows can lead the execution to abort only in debug mode. A specific flag must be passed to the compile to avoid such overflows (Tynan?). In ``Cargo.toml`` add:
+
+```toml
+[profile.release]
+overflow-checks = true
+```
 
 ### The prefixes of persistent storage should be different
 

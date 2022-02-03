@@ -8,11 +8,12 @@ First, we need to create an account for our contract. We can do this by submitti
 CreateAccountAction {}
 ```
 
+All transactions define a predecessor, i.e., the account id which creates this transaction. ``CreateAccountAction`` can only create create accounts for this predecessor. For example ``alice.near`` can create accounts of the form ``<subdomain>.alice.near``. A top level account e.g., ``alice.near`` can only be create by the registrar.
 The ``CreateAccount`` action does not contain any data, as it uses the receiver address of the Transaction or ActionReceipt within which it is contained.
 
-After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account.
+After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account. In NEAR's terms the predecessor of all the ActionReceipts following a CreateAccountAction is the new account id.
 
-(?Tynan) Add predecessors and registrar https://nomicon.io/RuntimeSpec/Actions#createaccountaction
+(?Tynan)
 
 ## Deploying a contract
 
