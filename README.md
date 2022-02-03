@@ -1,4 +1,4 @@
-# NEAR for Auditors
+# NEAR for Advanced Users
 
 ## How to Use:
 
@@ -10,6 +10,8 @@
 * ``mkdocs serve``
 
 ### Docker:
+
+In project's root directory run:
 
 ``docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:8.1.9``
 
