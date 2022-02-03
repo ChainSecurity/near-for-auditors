@@ -2,12 +2,11 @@ In this section, we present some common pitfalls developers and auditors should 
 
 ### "million cheap data additions"
 
-
-As we explained in a [previous tutorial](``storage.md``), NEAR introduces storage staking. This means that contracts should lock NEAR tokens when they use the storage. This gives rise to new [attack vectors](https://docs.near.org/docs/concepts/storage-staking). In particular, for contracts that pay their own fees, a malicious user could repetidly make cheap calls to a contract. This could lead the contract to a state which it cannot further interact with the storage since it does not hold enough funds rendering it useless.
+As we explained in a [previous tutorial](``storage.md``), NEAR introduces storage staking. This means that contracts should lock NEAR tokens when they use the storage. This gives rise to new [attack vectors](https://docs.near.org/docs/concepts/storage-staking). In particular, for contracts that pay their own fees, a malicious user could repeatedly make cheap calls to a contract. This could lead the contract to a state which it cannot further interact with the storage since it does not hold enough funds, rendering it useless.
 
 ### Arithmetic issues: Overflows, rounding errors
 
-Rust contracts are only allowed to use integers. Division operation between integers can lead to loss of precision (e.g., ``2/3=0``) and lead contracts to unexpected state. Moreover, rounding errors can accumulate. Like Ethereum, integers have a specified size, thus, operations can lead to overflows. It is important for users to know that overflows can lead the execution to abort only in debug mode. A specific flag must be passed to the compile to avoid such overflows (Tynan?). In ``Cargo.toml`` add:
+Rust contracts are only allowed to use integers. Division operation between integers can lead to loss of precision (e.g., ``2/3=0``) and lead contracts to unexpected state. Moreover, rounding errors can accumulate. Like Ethereum, integers have a specified size, thus, operations can lead to overflows. It is important for users to know that overflows will only lead the execution to abort in debug mode. A specific flag must be passed to the compiler to avoid such overflows in release mode. In ``Cargo.toml`` add:
 
 ```toml
 [profile.release]
@@ -16,7 +15,7 @@ overflow-checks = true
 
 ### The prefixes of persistent storage should be different
 
-As we explained when we talked about storage, in NEAR we should specify a prefix for each data structure we use. These prefixes should be guaranteed to different for different data structures otherwise unexpected behavior will arise. 
+As we explained when we talked about storage, in NEAR we should specify a prefix for each data structure we use. These prefixes should be guaranteed to different for different data structures otherwise unexpected behavior will arise. Additionally, the prefixes should not be substrings of one another - for example a map with the prefix "ab" could have storage slot conflicts with a map with the prefix "abc". (?Ioannis)
 
 ### Calls executed in multiple blocks
 
@@ -44,5 +43,5 @@ Similarly to the previous issue, there are no checks on how many promises should
 
 ### When to use U64 vs u64
 
-NEAR Protocol currently expects contracts to support JSON serialization. JSON can't handle large integers (above `2**53` bits). In order to support u64 and u128 integers users should make use of the serializable version of them, namely U64 and U128. ``json_types`` of ``near_sdk`` supports the onversion from U64 to u64 and U128 to u128. You can refer to [``near-sdk-docs`` ](https://github.com/near/sdk-docs/blob/93e2fa29f3f38fc3870d404555cf843b765ac34a/docs/contract-interface/serialization-interface.md) for more.
+NEAR Protocol currently expects contracts to support JSON serialization. JSON can't handle large integers (above `2**53` bits). In order to support u64 and u128 integers users should make use of the serializable version of them, namely U64 and U128. ``json_types`` of ``near_sdk`` supports the conversion from U64 to u64 and U128 to u128. You can refer to [``near-sdk-docs`` ](https://github.com/near/sdk-docs/blob/93e2fa29f3f38fc3870d404555cf843b765ac34a/docs/contract-interface/serialization-interface.md) for more.
 
