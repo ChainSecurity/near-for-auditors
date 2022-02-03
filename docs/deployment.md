@@ -4,13 +4,13 @@ Deploying a contract takes a few steps. These can either be done in a batch tran
 
 First, we need to create an account for our contract. We can do this by submitting a ``CreateAccount``action in a transaction. Additionally, we must either deploy a contract in the same batch transaction, or create an full access key so we can deploy it later.
 
-After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account.
-
 ```rust
 CreateAccountAction {}
 ```
 
 The ``CreateAccount`` action does not contain any data, as it uses the receiver address of the Transaction or ActionReceipt within which it is contained.
+
+After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account.
 
 (?Tynan) Add predecessors and registrar https://nomicon.io/RuntimeSpec/Actions#createaccountaction
 
@@ -56,7 +56,7 @@ impl Default for TestContract {
 
 
 The ``#[init]`` decorator allows us to write a function that returns an instance of the contract state, which is then written to storage. This allows us to initialize the contract. By default, ``#[init]`` panics if the state already exists, but we can instead use ``#[init(ignore_state)]`` if the function should be able to be called multiple times.
-In order to call an init method, we just submit a transaction with a FunctionCall action. An init method may take arguments and is not called automatically.
+In order to call an init method, we just submit a transaction with a FunctionCall action. We discuss FunctionCalls [here](execution.md) in more detail. An init method may take arguments and is not called automatically.
 If we call a different function before the ``#[init]`` function, the contract's ``Default`` implementation will be called. Therefore, if we want to enforce calling of the ``#[init]`` function, we should derive the ``PanicOnDefault`` trait, or simply replace the ``Default`` implementation with our desired functionality.
 
 ```rust

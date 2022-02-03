@@ -31,7 +31,7 @@ Note that ``HashMap`` is part of the standard library of Rust (``std`` ) and not
 
 The contract exposes two public functions (indicated with ``pub``), i.e. ``set_status`` and ``get_status``. 
 
-* ``set_status``: allows users to record a message. The first thing the call does is to get ``env::signer_account_id()`` from the environment. We will see in more detail how ``env::signer_account_id()`` works. For now, we can assume that it retrieves the ``account_id`` of the account which called the contract. Users familiar with Ethereum and solidity can think of this as ``msg.sender``. Then, the ``records`` map is updated by setting storing the ``message`` with the account id as the key.
+* ``set_status``: allows users to record a message. The first thing the call does is to get ``env::signer_account_id()`` from the environment. We will see in more detail how ``env::signer_account_id()`` works. For now, we can assume that it retrieves the ``account_id`` of the account which called the contract. Users familiar with Ethereum and Solidity can think of this as ``msg.sender``. After retrieving the account id, the ``records`` map is updated by setting storing the ``message`` with the account id as the key.
 
 * ``get_status``: allows users to retrieve the message for any account by simply passing the ``account_id`` of that specific account. Note that in case the ``account_id`` key is not present in the map, ``self.records.get(...)`` will return ``None``. For more information about the ``Option`` type, please refer [here](https://doc.rust-lang.org/std/option/).
 
