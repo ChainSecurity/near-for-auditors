@@ -165,9 +165,9 @@ This allows the restriction of access to callback functions to prevent external 
 
 As we have discussed, in contrast to Ethereum where transactions are executed atomically, in NEAR only Action Receipts are executed atomically. As we have showed in this tutorial, cross-contract calls create new Action Receipts.
 
-Let us consider the case where any of the calls of the ``call_all`` method failed. The failure of the cross-contract call, e.g., ``a``, would lead to reverting the storage modification performed by ``a`` only. However, the modification cassed by ``call_all`` would not be reverted. Moreover, ``handle_callback`` is indifferent of whether any of the external calls it awaits failed. As soon as all the external calls are executed, ``handle_callback`` can also execute. If we want to revert the changes of ``call_all``, we should do it manually in ``handle_callback``. At this point we want to draw the reader's attention to two important points:
+Let us consider the case where any of the calls of the ``call_all`` method failed. The failure of the cross-contract call, e.g., ``a``, would lead to reverting the storage modification performed by ``a`` **only**. However, the modification caused by ``call_all`` would **not** be reverted. Moreover, ``handle_callback`` is indifferent of whether any of the external calls it awaits failed. As soon as all the external calls are executed, ``handle_callback`` can also execute. If we want to revert the changes of ``call_all``, we should do it manually in ``handle_callback``. At this point we want to draw the reader's attention to two important points:
 
-1. Each contract is responsible for reverting its own state. Thus failures of cross-contract calls should be handled manually.
+1. Each contract is responsible for reverting its own state. Thus, failures of cross-contract calls should be handled manually.
 2. To revert the storage manually, the action needs to have enough gas. This should also be guaranteed by the implementation.
 
 The NEAR runtime does not prevent a second call to the same contract method from executing while the first one waits for its dependencies. This means that any modification of the first method call will be visible in the second one. For example, the following scenario is possible:
