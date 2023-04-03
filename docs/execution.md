@@ -3,22 +3,38 @@
 Let's consider the [StatusMessage](https://github.com/near/near-sdk-rs/blob/master/examples/status-message/src/lib.rs) contract:
 
 ```rust
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::{
+    env, near_bindgen, AccountId, collections
+};
+use near_sdk::store::UnorderedMap;
+
+
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
 pub struct StatusMessage {
-    records: HashMap<AccountId, String>,
+    records: UnorderedMap<AccountId, String>,
 }
 
 #[near_bindgen]
 impl StatusMessage {
+
+    #[init]
+    pub fn new() -> Self {
+        // Initializing `status_updates` with unique key prefix.
+        Self {
+            records: UnorderedMap::new(b"r".to_vec()),
+        }
+    }
+
     #[payable]
     pub fn set_status(&mut self, message: String) {
-        let account_id = env::signer_account_id();
+        let account_id = env::predecessor_account_id();
         log!("{} set_status with message {}", account_id, message);
         self.records.insert(account_id, message);
     }
 
-    pub fn get_status(&self, account_id: AccountId) -> Option::<String> {
+    pub fn get_status(&self, account_id: AccountId) -> Option<String> {
         log!("get_status for account_id {}", account_id);
         self.records.get(&account_id).cloned()
     }
@@ -26,12 +42,12 @@ impl StatusMessage {
 ```
 
 
-The state of the contract consists of a ``HashMap`` from ``AccountId`` to ``String``.
-Note that ``HashMap`` is part of the standard library of Rust (``std``) and not part of the ``near-sdk``. We will discuss [later](storage.md) what difference it would make, if we had chosen to use a structure from the ``near_sdk::collections``. 
+The state of the contract consists of a ``UnorderedMap`` from ``AccountId`` to ``String``.
+Note that ``UnorderedMap`` is part of the ``near_sdk`` library. For now we can think of it as the equivalent to the ``HashMap`` in the Rust (``std``) standard library. We will discuss [later](storage.md) the differences between ``near_sdk::store::UnorderedMap`` and ``std::collections::HashMap``.
 
-The contract exposes two public functions (indicated with ``pub``), namely ``set_status`` and ``get_status``. 
+The contract exposes three public functions (indicated with ``pub``), namely ``new``, ``set_status`` and ``get_status``. We'll ignore ``new`` for now as we dive deeper into it in a different tutorial. Let's focus on the other two for now:
 
-* ``set_status``: allows users to record a message. The first thing the call does is to get ``env::signer_account_id()`` from the environment. We will see in more detail how ``env::signer_account_id()`` works. For now, we can assume that it retrieves the ``account_id`` of the account which called the contract. Users familiar with Ethereum and Solidity can think of this as ``msg.sender``. After retrieving the account id, the ``records`` map is updated by storing the ``message`` with the account id as the key.
+* ``set_status``: enables users to save a message. When this function is called, it first retrieves the account ID of the user who called the contract by using the ``env::predecessor_account_id()`` command. To put it simply, this command works similarly to ``msg.sender`` in Ethereum and Solidity. Once the account ID is obtained, the ``records`` map is updated by associating the message with the corresponding account ID.
 
 * ``get_status``: allows users to retrieve the message for any account by simply passing the ``account_id`` of that specific account. Note that in case the ``account_id`` key is not present in the map, ``self.records.get(...)`` will return ``None``. For more information about the ``Option`` type, please refer [here](https://doc.rust-lang.org/std/option/).
 
