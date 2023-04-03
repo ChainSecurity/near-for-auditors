@@ -4,10 +4,10 @@ NEAR introduces a lot of new concepts with which auditors and developers might n
 
 Accounts are similar to Ethereum's public addresses in the sense that they can initiate transactions and store contracts. However, they differ a lot from their Ethereum counterparts in the following ways:
 
-* Each account has a human readable name in the form of ``[<subdomain>.]*near``.
-* Multiple public keys can sign transactions for one account using the corresponding private keys. These public keys are called [Full Access Keys](https://docs.near.org/docs/concepts/account#access-keys).
+* Each account has a human readable name in the form of ``[<subdomain>.]*near``. In Ethereum, public addresses are associated with a hexidecimal number by default. There are protocols that can wrap these addresses to human-readable names but these require extra steps from the users.
+* Multiple public keys can sign transactions for one account using the corresponding private keys. These public keys are called [Full Access Keys](https://docs.near.org/docs/concepts/account#access-keys). They can sign all kinds of transactions on behalf of one account.
 * Public keys can have limited access to an account [Function Call Keys](https://docs.near.org/docs/concepts/account#function-call-keys). These keys are allowed to make a specific function calls to a specific account and spend a limited amount of NEAR tokens stored in the account. A formal specification of the concept can be found [here](https://nomicon.io/DataStructures/AccessKey.html#accesskeypermissionfunctioncall).
-* An account can store a contract and still operate as a normal user account. This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys.
+* An account can store a contract and still operate as a normal user account. This means that an account that stores a contract can make arbitrary calls to other contracts since it is controlled by the users who have Full Access Keys to them.
 
 ### Actions
 
