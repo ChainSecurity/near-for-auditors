@@ -41,9 +41,9 @@ It is important to emphasize that there are no limitations on how many ``DeployC
 
 If a contract has methods that either view or modify the contract's state (which is represented by the ``&self`` or ``&mut self`` arguments), it needs to implement the ``Default`` trait. This is because when any method is called on the contract, a default state will be created if the contract state does not already exist.
 
-If you don't want a default state to be created, you can instead use the ``PanicOnDefault`` trait. As the name suggests, this trait will cause the program to panic when "default" is called.
+If you don't want a default state to be created, you can instead use the ``PanicOnDefault`` trait. As the name suggests, this trait will cause the program to panic when ``default`` is called.
 
-To implement the ``Default`` trait, you can either use a pre-written macro or manually write the implementation yourself.
+To implement the ``Default`` trait, you can either use the ``derive`` macro or manually write the implementation yourself.
 
 For [StatusMessage](https://github.com/near/near-sdk-rs/blob/master/examples/status-message/src/lib.rs#L8) contract we derive the trait using a Rust macro:
 
