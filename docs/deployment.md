@@ -17,7 +17,7 @@ After creating a new account, all subsequent actions in the same batch transacti
 
 To deploy new code to an account, you need to have the authority to do so, which means having a full access key or allowing the contract itself to deploy its code. You can do this by submitting a ``DeployContract`` action that includes the contract's bytecode. This action replaces any existing code with the new bytecode you submitted.
 
-If you want to update the code of an existing contract, you can deploy the new code multiple times. However, if you want to make sure that the contract is not modified after it has been deployed, you need to remove all Full Access Keys. Also, the contract should not be able to deploy code to itself in an untrusted manner.
+If you want to update the code of an existing contract, you can deploy new code to it again. However, if you want to make sure that the contract is not modified after it has been deployed, you need to remove all Full Access Keys. Also, the contract should not be able to deploy code to itself in an untrusted manner.
 
 It's worth noting that there is a limit to how much code can be deployed to a contract, which is determined by the genesis configuration. The current limit is 4194304 bytes (2^22).
 
