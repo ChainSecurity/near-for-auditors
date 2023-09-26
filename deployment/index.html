@@ -1,0 +1,658 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../basics/">
+      
+      
+        <link rel="next" href="../execution/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+    
+    
+      
+        <title>Deployment - NEAR for Advanced Users</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d451bc0e.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#creating-an-account" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NEAR for Advanced Users" class="md-header__button md-logo" aria-label="NEAR for Advanced Users" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NEAR for Advanced Users
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deployment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NEAR for Advanced Users" class="md-nav__button md-logo" aria-label="NEAR for Advanced Users" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    NEAR for Advanced Users
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Intro
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-account" class="md-nav__link">
+    Creating an account
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-a-contract" class="md-nav__link">
+    Deploying a contract
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    Initialization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#all-together-now" class="md-nav__link">
+    All together now
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../execution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Execution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-contract-calls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cross-contract Calls
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-account" class="md-nav__link">
+    Creating an account
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-a-contract" class="md-nav__link">
+    Deploying a contract
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    Initialization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#all-together-now" class="md-nav__link">
+    All together now
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Deployment</h1>
+
+<p>Deploying a contract takes a few steps. These can either be done in a batch transaction or individually. One thing is for sure, we need to store the contract under an account id. For that we might need to create a new account.</p>
+<h2 id="creating-an-account">Creating an account</h2>
+<p>First, we need to create an account for our contract. We can do this by submitting a <code>CreateAccount</code>action in a transaction. Additionally, we must either deploy a contract in the same batch transaction, or create an full access key so we can deploy it later.</p>
+<div class="highlight"><pre><span></span><code><span class="n">CreateAccountAction</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+<p>All transactions define a predecessor, i.e., the account id which creates this transaction. <code>CreateAccountAction</code> can only create accounts for this predecessor. For example <code>alice.near</code> can create accounts of the form <code>&lt;subdomain&gt;.alice.near</code>. A top level account e.g., <code>alice.near</code> can only be created by the registrar.
+The <code>CreateAccount</code> action does not contain any data, as it uses the receiver address of the Transaction or ActionReceipt within which it is contained.</p>
+<p>After creating a new account, all subsequent actions in the same batch transaction will be executed on behalf of the new account. In NEAR's terms the predecessor of all the ActionReceipts following a CreateAccountAction is the new account id.</p>
+<h2 id="deploying-a-contract">Deploying a contract</h2>
+<p>To deploy new code to an account, you need to have the authority to do so, which means having a full access key or allowing the contract itself to deploy its code. You can do this by submitting a <code>DeployContract</code> action that includes the contract's bytecode. This action replaces any existing code with the new bytecode you submitted.</p>
+<p>If you want to update the code of an existing contract, you can deploy new code to it again. However, if you want to make sure that the contract is not modified after it has been deployed, you need to remove all Full Access Keys. Also, the contract should not be able to deploy code to itself in an untrusted manner.</p>
+<p>It's worth noting that there is a limit to how much code can be deployed to a contract, which is determined by the genesis configuration. The current limit is 4194304 bytes (2^22).</p>
+<p>The <code>DeployContractAction</code> is simply the action you take to deploy the new code, and it follows a specific format.</p>
+<div class="highlight"><pre><span></span><code><span class="n">DeployContractAction</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">code</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="kt">u8</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The contract is deployed and ready to use as soon as the action finishes.</p>
+<p>It is important to emphasize that there are no limitations on how many <code>DeployContract</code> actions exist in a batch. For example, we could have a batch that looks like: </p>
+<ol>
+<li>Deploy a contract</li>
+<li>Function call on that contract</li>
+<li>Deploy a new contract to that location</li>
+</ol>
+<h2 id="initialization">Initialization</h2>
+<p>If a contract has methods that either view or modify the contract's state (which is represented by the <code>&amp;self</code> or <code>&amp;mut self</code> arguments), it needs to implement the <code>Default</code> trait. This is because when any method is called on the contract, a default state will be created if the contract state does not already exist.</p>
+<p>If you don't want a default state to be created, you can instead use the <code>PanicOnDefault</code> trait. As the name suggests, this trait will cause the program to panic when <code>default</code> is called.</p>
+<p>To implement the <code>Default</code> trait, you can either use the <code>derive</code> macro or manually write the implementation yourself.</p>
+<p>For <a href="https://github.com/near/near-sdk-rs/blob/master/examples/status-message/src/lib.rs#L8">StatusMessage</a> contract we derive the trait using a Rust macro:</p>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">near_sdk</span>::<span class="n">borsh</span>::<span class="p">{</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">BorshDeserialize</span><span class="p">,</span><span class="w"> </span><span class="n">BorshSerialize</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">near_sdk</span>::<span class="p">{</span><span class="n">near_bindgen</span><span class="p">,</span><span class="w"> </span><span class="n">AccountId</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">collections</span>::<span class="n">HashMap</span><span class="p">;</span>
+
+<span class="cp">#[derive(Default, BorshDeserialize, BorshSerialize)]</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">StatusMessage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">records</span>: <span class="nc">HashMap</span><span class="o">&lt;</span><span class="n">AccountId</span><span class="p">,</span><span class="w"> </span><span class="nb">String</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>For <a href="https://github.com/near/near-sdk-rs/blob/master/examples/test-contract/src/lib.rs">TestContract</a> we implement it ourselves:</p>
+<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">near_sdk</span>::<span class="n">near_bindgen</span><span class="p">;</span>
+
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">TestContract</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="k">impl</span><span class="w"> </span><span class="nb">Default</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">TestContract</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">default</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="nc">Self</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="bp">Self</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#[near_bindgen]</span>
+<span class="k">impl</span><span class="w"> </span><span class="n">TestContract</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cp">#[init]</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">new</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="nc">Self</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="bp">Self</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>#[init]</code> decorator allows us to write a function that returns an instance of the contract state, which is then written to storage. This allows us to initialize the contract. By default, <code>#[init]</code> panics if the state already exists, but we can instead use <code>#[init(ignore_state)]</code> if the function should be able to be called multiple times.
+In order to call an init method, we just submit a transaction with a FunctionCall action. We discuss FunctionCalls <a href="../execution/">here</a> in more detail. An init method may take arguments and is not called automatically.
+If we call a different function before the <code>#[init]</code> function, the contract's <code>Default</code> implementation will be called. Therefore, if we want to enforce calling of the <code>#[init]</code> function, we should derive the <code>PanicOnDefault</code> trait, or simply replace the <code>Default</code> implementation with our desired functionality.</p>
+<h2 id="all-together-now">All together now</h2>
+<p>Putting it all together, we could submit a transaction containing a batch of actions as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="n">actions</span>: <span class="p">[</span>
+<span class="w">    </span><span class="n">CreateAccountAction</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="n">AddKeyAction</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;public_key&quot;</span>: <span class="s">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;access_key&quot;</span>: <span class="s">&quot;...&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="n">DeployContractAction</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;code&quot;</span>: <span class="s">&quot;...&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="n">FunctionCall</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">gas</span>: <span class="mi">100000</span><span class="p">,</span><span class="w"> </span><span class="n">deposit</span>: <span class="mi">0</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                   </span><span class="n">method_name</span>: <span class="s">&quot;init&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">args</span>: <span class="s">&quot;{&#39;hello_world&#39;}&quot;</span><span class="w"> </span>
+<span class="w">                 </span><span class="p">}</span>
+<span class="p">],</span>
+</code></pre></div>
+<p>This batch would then execute atomically, so even if the init method were to fail, we wouldn't be left with a misconfigured contract. Later, we can upgrade the contract by using the access key we created, assuming we configured it to have full access.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.726fbb30.min.js"></script>
+      
+    
+  </body>
+</html>
